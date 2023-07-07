@@ -94,6 +94,24 @@ class Product extends CoreModel
     }
 
     /**
+     * Récupérer les 3 produits mises en avant sur la home Backoffice
+     *
+     * @return Product[]
+     */
+    public function findAllBackofficeHomepage()
+    {
+        $pdo = Database::getPDO();
+        $sql = '
+            SELECT *
+            FROM product
+            LIMIT 3
+        ';
+        $pdoStatement = $pdo->query($sql);
+        $products = $pdoStatement->fetchAll(PDO::FETCH_CLASS, 'App\Models\Product');
+
+        return $products;
+    }
+    /**
      * Get the value of name
      *
      * @return  string

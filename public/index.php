@@ -6,6 +6,9 @@
 // inclusion des dépendances via Composer
 // autoload.php permet de charger d'un coup toutes les dépendances installées avec composer
 // mais aussi d'activer le chargement automatique des classes (convention PSR-4)
+
+use App\Controllers\MainController;
+
 require_once '../vendor/autoload.php';
 
 /* ------------
@@ -50,7 +53,65 @@ $router->map(
     'main-home'
 );
 
+$router->map(
+    'GET',
+    '/categories',
+    [
+        'method' => 'categoriesList',
+        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+    ],
+    'main-categories'
+);
 
+$router->map(
+    'GET',
+    '/categories/add',
+    [
+        'method' => 'addCategory',
+        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+    ],
+    'main-addCategory'
+);
+
+$router->map(
+    'GET',
+    '/brands',
+    [
+        'method' => 'brandsList',
+        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+    ],
+    'main-brands'
+);
+
+$router->map(
+    'GET',
+    '/brands/add',
+    [
+        'method' => 'addBrand',
+        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+    ],
+    'main-addBrand'
+);
+
+$router->map(
+    'GET',
+    '/products',
+    [
+        'method' => 'productsList',
+        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+    ],
+    'main-products'
+);
+
+$router->map(
+    'GET',
+    '/products/add',
+    [
+        'method' => 'addProduct',
+        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+    ],
+    'main-addProduct'
+);
 /* -------------
 --- DISPATCH ---
 --------------*/
