@@ -33,4 +33,26 @@ class ProductController extends CoreController
             'productList'=>$allProductList
         ]);
     }
+
+    /**
+     * Méthode s'occupant d'exécuter l'ajout 
+     *
+     * @return void
+     */
+    public function addExecute(){
+        $name = filter_input(INPUT_POST, 'name');
+        $description = filter_input(INPUT_POST, 'description');
+        $picture = filter_input(INPUT_POST, 'picture');
+        $price = filter_input(INPUT_POST, 'price');
+        $rate = filter_input(INPUT_POST, 'rate');
+
+        $product = new Product();
+        $product->setName($name);
+        $product->setDescription($description);
+        $product->setPicture($picture);
+        $product->setPrice($price);
+        $product->setRate($rate);
+
+        $product->insert();
+    }
 }

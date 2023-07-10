@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Category;
+use App\Utils\Database;
+use PDO;
 
 class CategoryController extends CoreController
 {
@@ -31,4 +33,33 @@ class CategoryController extends CoreController
     public function add(){
         $this->show('category/add');
     }
+    
+    /**
+     * Méthode s'occupant d'exécuter l'ajout 
+     *
+     * @return void
+     */
+    public function addExecute(){
+        $name = filter_input(INPUT_POST, 'name');
+        $subtitle = filter_input(INPUT_POST, 'subtitle');
+        $picture = filter_input(INPUT_POST, 'picture');
+
+        $category = new Category();
+        $category->setName($name);
+        $category->setPicture($picture);
+        $category->setSubtitle($subtitle);
+
+        $category->insert();
+        
+    }
+
+    public function edit($id){
+        $id = $_GET["id"];
+        $categoryToEdit = Category::find($id);
+
+        $this->show('category/edit', [
+            'categoryToEdit'=>$categoryToEdit
+        ]);
+    }
+
 }

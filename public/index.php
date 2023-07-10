@@ -75,6 +75,26 @@ $router->map(
     'category-add'
 );
 
+$router->map(
+    'POST',
+    '/category/add',
+    [
+        'method' => 'addExecute',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-addExecute'
+);
+
+$router->map(
+    'GET',
+    '/category/edit/[i:id]',
+    [
+        'method' => 'edit',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-edit'
+);
+
 /* PRODUCT */ 
 
 $router->map(
