@@ -47,7 +47,7 @@
                             </tbody>
                         </table>
                         <div class="d-grid gap-2">
-                            <a href="categories.html" class="btn btn-success">Voir plus</a>
+                            <a href="<?= $router->generate('category-browse'); ?>" class="btn btn-success">Voir plus</a>
                         </div>
                     </div>
                 </div>

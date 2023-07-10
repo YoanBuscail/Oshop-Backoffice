@@ -1,21 +1,23 @@
 <div class="container my-4">
-        <a href="<?= $router->generate("main-addBrand") ?>" class="btn btn-success float-end">Ajouter</a>
-        <h2>Liste des marques</h2>
+        <a href="<?= $router->generate('product-add'); ?>" class="btn btn-success float-end">Ajouter</a>
+        <h2>Liste des produits</h2>
         <table class="table table-hover mt-4">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nom</th>
+                    <th scope="col">Prix</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                foreach ($brandsList as $brand){
+                foreach ($productList as $product){
                 ?> 
                 <tr>
-                    <th scope="row"><?= $brand->getId() ?></th>
-                    <td><?= $brand->getName() ?></td>
+                    <th scope="row"><?= $product->getId() ?></th>
+                    <td><?= $product->getName() ?></td>
+                    <td><?= $product->getPrice() ?></td>
                     <td class="text-end">
                         <a href="" class="btn btn-sm btn-warning">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

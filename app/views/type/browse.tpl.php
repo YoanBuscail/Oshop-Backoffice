@@ -1,23 +1,21 @@
 <div class="container my-4">
-        <a href="<?= $router->generate("main-addCategory") ?>" class="btn btn-success float-end">Ajouter</a>
-        <h2>Liste des catégories</h2>
+        <a href="<?= $router->generate("type-add") ?>" class="btn btn-success float-end">Ajouter</a>
+        <h2>Liste des types</h2>
         <table class="table table-hover mt-4">
             <thead>
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nom</th>
-                    <th scope="col">Sous-titre</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <?php
-                foreach ($categoriesList as $category){
+                foreach ($typeList as $type){
                 ?> 
                 <tr>
-                    <th scope="row"><?= $category->getId() ?></th>
-                    <td><?= $category->getName() ?></td>
-                    <td><?= $category->getSubtitle() ?></td>
+                    <th scope="row"><?= $type->getId() ?></th>
+                    <td><?= $type->getName() ?></td>
                     <td class="text-end">
                         <a href="" class="btn btn-sm btn-warning">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>

@@ -99,7 +99,7 @@ class Category extends CoreModel
      * @param int $categoryId ID de la catégorie
      * @return Category
      */
-    public function find($categoryId)
+    public static function find($categoryId)
     {
         // se connecter à la BDD
         $pdo = Database::getPDO();
@@ -122,7 +122,7 @@ class Category extends CoreModel
      *
      * @return Category[]
      */
-    public function findAll()
+    public static function findAll()
     {
         $pdo = Database::getPDO();
         $sql = 'SELECT * FROM `category`';
@@ -137,7 +137,7 @@ class Category extends CoreModel
      *
      * @return Category[]
      */
-    public function findAllHomepage()
+    public static function findAllHomepage()
     {
         $pdo = Database::getPDO();
         $sql = '
@@ -157,7 +157,7 @@ class Category extends CoreModel
      *
      * @return Category[]
      */
-    public function findAllBackofficeHomepage()
+    public static function findAllBackofficeHomepage()
     {
         $pdo = Database::getPDO();
         $sql = '

@@ -53,64 +53,92 @@ $router->map(
     'main-home'
 );
 
+/* CATEGORY */ 
+
 $router->map(
     'GET',
-    '/categories',
+    '/category',
     [
-        'method' => 'categoriesList',
-        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+        'method' => 'browse',
+        'controller' => '\App\Controllers\CategoryController' // On indique le FQCN de la classe
     ],
-    'main-categories'
+    'category-browse'
 );
 
 $router->map(
     'GET',
-    '/categories/add',
+    '/category/add',
     [
-        'method' => 'addCategory',
-        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+        'method' => 'add',
+        'controller' => '\App\Controllers\CategoryController'
     ],
-    'main-addCategory'
+    'category-add'
+);
+
+/* PRODUCT */ 
+
+$router->map(
+    'GET',
+    '/product',
+    [
+        'method' => 'browse',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-browse'
 );
 
 $router->map(
     'GET',
-    '/brands',
+    '/product/add',
     [
-        'method' => 'brandsList',
-        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+        'method' => 'add',
+        'controller' => '\App\Controllers\ProductController'
     ],
-    'main-brands'
+    'product-add'
+);
+
+/* BRAND */ 
+
+$router->map(
+    'GET',
+    '/brand',
+    [
+        'method' => 'browse',
+        'controller' => '\App\Controllers\BrandController' // On indique le FQCN de la classe
+    ],
+    'brand-browse'
 );
 
 $router->map(
     'GET',
-    '/brands/add',
+    '/brand/add',
     [
-        'method' => 'addBrand',
-        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+        'method' => 'add',
+        'controller' => '\App\Controllers\BrandController' // On indique le FQCN de la classe
     ],
-    'main-addBrand'
+    'brand-add'
+);
+
+/* TYPES */ 
+
+$router->map(
+    'GET',
+    '/type',
+    [
+        'method' => 'browse',
+        'controller' => '\App\Controllers\TypeController' // On indique le FQCN de la classe
+    ],
+    'type-browse'
 );
 
 $router->map(
     'GET',
-    '/products',
+    '/type/add',
     [
-        'method' => 'productsList',
-        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
+        'method' => 'add',
+        'controller' => '\App\Controllers\TypeController' // On indique le FQCN de la classe
     ],
-    'main-products'
-);
-
-$router->map(
-    'GET',
-    '/products/add',
-    [
-        'method' => 'addProduct',
-        'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
-    ],
-    'main-addProduct'
+    'type-add'
 );
 /* -------------
 --- DISPATCH ---
