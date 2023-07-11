@@ -80,27 +80,35 @@ class Type extends CoreModel
     }
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table brand
+     * Méthode permettant d'ajouter un enregistrement dans la BDD
      * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      *
      * @return bool
      */
-    public function insert()
+    public function insert() :bool
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
 
         // Ecriture de la requête INSERT INTO
+        // on prépare des emplacement pour les valeurs à remplacer dans la requête
         $sql = "
             INSERT INTO `category` (name)
-            VALUES ('{$this->name}')
+            VALUES (:name);
         ";
 
-        // Execution de la requête d'insertion (exec, pas query)
-        $insertedRows = $pdo->exec($sql);
+        // $preparedQuery est un objet PDOStatement
+        $preparedQuery = $pdo->prepare($sql);
+
+
+        // Execution de la requête d'insertion avec la méthode execute
+        // On fournit un tableau qui contient les valeurs à remplacer dans la requête
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':name' => $this->name,
+        ]);
 
         // Si au moins une ligne ajoutée
-        if ($insertedRows > 0) {
+        if ($queryIsSuccessful) {
             // Alors on récupère l'id auto-incrémenté généré par MySQL
             $this->id = $pdo->lastInsertId();
 
@@ -111,5 +119,33 @@ class Type extends CoreModel
 
         // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
         return false;
+    }
+
+    /**
+     * Méthode permettant de mettre à jour un enregistrement dans la table brand
+     * L'objet courant doit contenir l'id, et toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     *
+     * @return bool
+     */
+    public function update()
+    {
+        // Récupération de l'objet PDO représentant la connexion à la DB
+        $pdo = Database::getPDO();
+
+        // Ecriture de la requête UPDATE
+        $sql = "
+            UPDATE `type`
+            SET
+                name = :name,
+                updated_at = NOW()
+            WHERE id = :id
+        ";
+
+        $preparedQuery = $pdo->prepare($sql);
+
+        $preparedQuery->bindValue(':name', $this->name);
+        $preparedQuery->bindValue(':id', $this->id);
+
+        $preparedQuery->execute();
     }
 }

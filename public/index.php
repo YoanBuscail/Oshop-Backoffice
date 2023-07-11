@@ -95,6 +95,16 @@ $router->map(
     'category-edit'
 );
 
+$router->map(
+    'POST',
+    '/category/edit/[i:id]',
+    [
+        'method' => 'editExecute',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-editExecute'
+);
+
 /* PRODUCT */ 
 
 $router->map(
@@ -135,6 +145,16 @@ $router->map(
         'controller' => '\App\Controllers\ProductController'
     ],
     'product-edit'
+);
+
+$router->map(
+    'POST',
+    '/product/edit/[i:id]',
+    [
+        'method' => 'editExecute',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-editExecute'
 );
 
 /* BRAND */ 
@@ -179,6 +199,16 @@ $router->map(
     'brand-edit'
 );
 
+$router->map(
+    'POST',
+    '/brand/edit/[i:id]',
+    [
+        'method' => 'editExecute',
+        'controller' => '\App\Controllers\BrandController'
+    ],
+    'brand-editExecute'
+);
+
 /* TYPES */ 
 
 $router->map(
@@ -221,6 +251,15 @@ $router->map(
     'type-edit'
 );
 
+$router->map(
+    'POST',
+    '/type/edit/[i:id]',
+    [
+        'method' => 'editExecute',
+        'controller' => '\App\Controllers\TypeController'
+    ],
+    'type-editExecute'
+);
 /* -------------
 --- DISPATCH ---
 --------------*/

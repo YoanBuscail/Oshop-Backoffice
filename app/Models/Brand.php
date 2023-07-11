@@ -76,14 +76,16 @@ class Brand extends CoreModel
         // Ecriture de la requête INSERT INTO
         $sql = "
             INSERT INTO `brand` (name)
-            VALUES ('{$this->name}')
+            VALUES (:name)
         ";
 
-        // Execution de la requête d'insertion (exec, pas query)
-        $insertedRows = $pdo->exec($sql);
+        $preparedQuery = $pdo->prepare($sql);
 
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':name' => $this->name,
+        ]);
         // Si au moins une ligne ajoutée
-        if ($insertedRows > 0) {
+        if ($queryIsSuccessful) {
             // Alors on récupère l'id auto-incrémenté généré par MySQL
             $this->id = $pdo->lastInsertId();
 
@@ -111,16 +113,17 @@ class Brand extends CoreModel
         $sql = "
             UPDATE `brand`
             SET
-                name = '{$this->name}',
+                name = :name,
                 updated_at = NOW()
-            WHERE id = {$this->id}
+            WHERE id = :id
         ";
 
-        // Execution de la requête de mise à jour (exec, pas query)
-        $updatedRows = $pdo->exec($sql);
+        $preparedQuery = $pdo->prepare($sql);
 
-        // On retourne VRAI, si au moins une ligne ajoutée
-        return ($updatedRows > 0);
+        $preparedQuery->bindValue(':name', $this->name);
+        $preparedQuery->bindValue(':id', $this->id);
+
+        $preparedQuery->execute();
     }
 
     /**

@@ -15,9 +15,9 @@
                 ?> 
                 <tr>
                     <th scope="row"><?= $brand->getId() ?></th>
-                    <td><?= $brand->getName() ?></td>
+                    <td><?= htmlentities($brand->getName()) ?></td>
                     <td class="text-end">
-                        <a href="" class="btn btn-sm btn-warning">
+                        <a href="<?= $router->generate('brand-edit', ["id" => $brand->getId()]); ?>" class="btn btn-sm btn-warning">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>
                         <!-- Example single danger button -->

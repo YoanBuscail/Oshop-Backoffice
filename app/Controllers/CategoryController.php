@@ -73,13 +73,40 @@ class CategoryController extends CoreController
         exit;
     }
 
-    public function edit($id){
-        $id = $_GET["id"];
-        $categoryToEdit = Category::find($id);
+    public function edit($params)
+    {
+        // Récupérer l'identifiant de la catégorie à modifier à partir des paramètres de la route
+        $categoryId = $params["id"];
 
+        // Récupérer la catégorie à partir de son identifiant
+        $categoryToModify = Category::find($categoryId);
+
+        // Afficher le formulaire de modification de la catégorie
         $this->show('category/edit', [
-            'categoryToEdit'=>$categoryToEdit
+            'categoryToModify' => $categoryToModify
         ]);
     }
 
+    public function editExecute($params){
+        $categoryId = $params["id"];
+        $categoryToModify = Category::find($categoryId);
+        
+        // Récupérer les nouvelles données du formulaire de modification
+        $name = filter_input(INPUT_POST, 'name');
+        $subtitle = filter_input(INPUT_POST, 'subtitle');
+        $picture = filter_input(INPUT_POST, 'picture', FILTER_VALIDATE_URL);
+
+        // Mettre à jour les propriétés de la catégorie
+        $categoryToModify->setName($name);
+        $categoryToModify->setSubtitle($subtitle);
+        $categoryToModify->setPicture($picture);
+
+        // Enregistrer les modifications dans la base de données
+        $categoryToModify->update();
+
+        // Rediriger l'utilisateur vers la liste des catégories
+        global $router;
+        header('Location: ' . $router->generate('category-browse'));
+        exit;
+    }
 }
