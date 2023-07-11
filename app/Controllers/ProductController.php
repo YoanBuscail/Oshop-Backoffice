@@ -14,7 +14,7 @@ class ProductController extends CoreController
     public function add()
     {
         // Préparer les données ( = en général les récupérer depuis la BDD )
-
+        // TODO dynamiser les listes de catégorie, marque et type
         // On appelle la méthode show() de l'objet courant
         $this->show('product/add');
     }

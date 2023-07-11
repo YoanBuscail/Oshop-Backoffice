@@ -29,4 +29,19 @@ class BrandController extends CoreController
     public function add(){
         $this->show('brand/add');
     }
+
+    /**
+     * Méthode s'occupant d'exécuter l'ajout 
+     *
+     * @return void
+     */
+    public function addExecute(){
+        $name = filter_input(INPUT_POST, 'name');
+        $picture = filter_input(INPUT_POST, 'picture');
+
+        $brand = new Brand();
+        $brand->setName($name);
+
+        $brand->insert();   
+    }
 }

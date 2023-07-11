@@ -29,4 +29,18 @@ class TypeController extends CoreController
     public function add(){
         $this->show('type/add');
     }
+
+        /**
+     * Méthode s'occupant d'exécuter l'ajout 
+     *
+     * @return void
+     */
+    public function addExecute(){
+        $name = filter_input(INPUT_POST, 'name');
+
+        $type = new Type();
+        $type->setName($name);
+
+        $type->insert();   
+    }
 }

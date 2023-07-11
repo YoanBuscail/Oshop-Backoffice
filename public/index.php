@@ -117,6 +117,26 @@ $router->map(
     'product-add'
 );
 
+$router->map(
+    'POST',
+    '/product/add',
+    [
+        'method' => 'addExecute',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-addExecute'
+);
+
+$router->map(
+    'GET',
+    '/product/edit/[i:id]',
+    [
+        'method' => 'edit',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-edit'
+);
+
 /* BRAND */ 
 
 $router->map(
@@ -137,6 +157,26 @@ $router->map(
         'controller' => '\App\Controllers\BrandController' // On indique le FQCN de la classe
     ],
     'brand-add'
+);
+
+$router->map(
+    'POST',
+    '/brand/add',
+    [
+        'method' => 'addExecute',
+        'controller' => '\App\Controllers\BrandController'
+    ],
+    'brand-addExecute'
+);
+
+$router->map(
+    'GET',
+    '/brand/edit/[i:id]',
+    [
+        'method' => 'edit',
+        'controller' => '\App\Controllers\BrandController'
+    ],
+    'brand-edit'
 );
 
 /* TYPES */ 
@@ -160,6 +200,27 @@ $router->map(
     ],
     'type-add'
 );
+
+$router->map(
+    'POST',
+    '/type/add',
+    [
+        'method' => 'addExecute',
+        'controller' => '\App\Controllers\TypeController'
+    ],
+    'type-addExecute'
+);
+
+$router->map(
+    'GET',
+    '/type/edit/[i:id]',
+    [
+        'method' => 'edit',
+        'controller' => '\App\Controllers\TypeController'
+    ],
+    'type-edit'
+);
+
 /* -------------
 --- DISPATCH ---
 --------------*/

@@ -3,8 +3,6 @@
 namespace App\Controllers;
 
 use App\Models\Category;
-use App\Utils\Database;
-use PDO;
 
 class CategoryController extends CoreController
 {
@@ -40,17 +38,39 @@ class CategoryController extends CoreController
      * @return void
      */
     public function addExecute(){
+        // récupérer les données
         $name = filter_input(INPUT_POST, 'name');
         $subtitle = filter_input(INPUT_POST, 'subtitle');
-        $picture = filter_input(INPUT_POST, 'picture');
+        $picture = filter_input(INPUT_POST, 'picture', FILTER_VALIDATE_URL);
 
-        $category = new Category();
-        $category->setName($name);
-        $category->setPicture($picture);
-        $category->setSubtitle($subtitle);
+         // NTUI ( nettoyage / validation des données )
+        // Les validations faites cotés FRONT ( dans le navigateur ) peuvent toutes être contournées
+        // Il FAUT vérifier les données cotés back
+        //  - la cohérence des données ( est ce que les données sont valides )
+        //  - la complétude ? des données ( est ce qu'on a toutes les données nécessaires )
+        // TODO traiter les erreurs
 
-        $category->insert();
+        // traiter le formulaire
+        // dans ce cas insérer en BDD
+
+        // on crée un modèle 
+        $categoryToInsert = new Category();
+
+        // que l'on rempli ( on l'hydrate ) avec les données saisies par l'utilisateur
+
+        $categoryToInsert->setName($name);
+        $categoryToInsert->setPicture($picture);
+        $categoryToInsert->setSubtitle($subtitle);
+
+        // on lance la requête d'insertion
+        $categoryToInsert->insert();
         
+        // TODO se débarasser de ce global !!!!
+        global $router;
+        // une fois le formulaire traité on redirige l'utilisateur
+        header('Location: ' . $router->generate('category-browse'));
+
+        exit;
     }
 
     public function edit($id){

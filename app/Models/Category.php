@@ -174,12 +174,12 @@ class Category extends CoreModel
     }
 
     /**
-     * Méthode permettant d'ajouter un enregistrement dans la table brand
+     * Méthode permettant d'ajouter un enregistrement dans la table
      * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
      *
      * @return bool
      */
-    public function insert()
+    public function insertNotSecured()
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
@@ -195,6 +195,50 @@ class Category extends CoreModel
 
         // Si au moins une ligne ajoutée
         if ($insertedRows > 0) {
+            // Alors on récupère l'id auto-incrémenté généré par MySQL
+            $this->id = $pdo->lastInsertId();
+
+            // On retourne VRAI car l'ajout a parfaitement fonctionné
+            return true;
+            // => l'interpréteur PHP sort de cette fonction car on a retourné une donnée
+        }
+
+        // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
+        return false;
+    }
+
+    /**
+     * Méthode permettant d'ajouter un enregistrement dans la BDD
+     * L'objet courant doit contenir toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     *
+     * @return bool
+     */
+    public function insert() :bool
+    {
+        // Récupération de l'objet PDO représentant la connexion à la DB
+        $pdo = Database::getPDO();
+
+        // Ecriture de la requête INSERT INTO
+        // on prépare des emplacement pour les valeurs à remplacer dans la requête
+        $sql = "
+            INSERT INTO `category` (name, subtitle, picture)
+            VALUES (:name, :subtitle, :emplacement_picture);
+        ";
+
+        // $preparedQuery est un objet PDOStatement
+        $preparedQuery = $pdo->prepare($sql);
+
+
+        // Execution de la requête d'insertion avec la méthode execute
+        // On fournit un tableau qui contient les valeurs à remplacer dans la requête
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':name' => $this->name,
+            ':subtitle' => $this->subtitle,
+            ':emplacement_picture' => $this->picture,
+        ]);
+
+        // Si au moins une ligne ajoutée
+        if ($queryIsSuccessful) {
             // Alors on récupère l'id auto-incrémenté généré par MySQL
             $this->id = $pdo->lastInsertId();
 

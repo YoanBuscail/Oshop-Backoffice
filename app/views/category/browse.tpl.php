@@ -16,8 +16,8 @@
                 ?> 
                 <tr>
                     <th scope="row"><?= $category->getId() ?></th>
-                    <td><?= $category->getName() ?></td>
-                    <td><?= $category->getSubtitle() ?></td>
+                    <td><?= htmlentities($category->getName()) ?></td>
+                    <td><?= htmlentities($category->getSubtitle()) ?></td>
                     <td class="text-end">
                         <a href="<?= $router->generate('category-edit') ?>" class="btn btn-sm btn-warning">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
@@ -38,7 +38,6 @@
                 <?php
                 }
                 ?>
-                
             </tbody>
         </table>
     </div>

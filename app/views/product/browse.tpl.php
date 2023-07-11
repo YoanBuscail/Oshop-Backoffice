@@ -16,8 +16,8 @@
                 ?> 
                 <tr>
                     <th scope="row"><?= $product->getId() ?></th>
-                    <td><?= $product->getName() ?></td>
-                    <td><?= $product->getPrice() ?></td>
+                    <td><?= htmlentities($product->getName()) ?></td>
+                    <td><?= htmlentities($product->getPrice()) ?></td>
                     <td class="text-end">
                         <a href="" class="btn btn-sm btn-warning">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
