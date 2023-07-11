@@ -304,15 +304,27 @@ class Product extends CoreModel
 
         // Ecriture de la requête INSERT INTO
         $sql = "
-            INSERT INTO `category` (name, description, picture, price, rate)
-            VALUES ('{$this->name}','{$this->description}', '{$this->picture}', '{$this->price}', '{$this->rate}')
+        INSERT INTO `product` (name, description, picture, price, rate, status, category_id, brand_id, type_id)
+        VALUES (:name, :description, :picture, :price, :rate, :status, :categoryId, :brandId, :typeId);
         ";
 
-        // Execution de la requête d'insertion (exec, pas query)
-        $insertedRows = $pdo->exec($sql);
+        $preparedQuery = $pdo->prepare($sql);
+
+        // Execution de la requête d'insertion avec la méthode execute
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':name' => $this->name,
+            ':description' => $this->description,
+            ':picture' => $this->picture,
+            ':price' => $this->price,
+            ':rate' => $this->rate,
+            ':status' => $this->status,
+            ':categoryId' => $this->category_id,
+            ':brandId' => $this->brand_id,
+            ':typeId' => $this->type_id
+       ]);
 
         // Si au moins une ligne ajoutée
-        if ($insertedRows > 0) {
+        if ($queryIsSuccessful) {
             // Alors on récupère l'id auto-incrémenté généré par MySQL
             $this->id = $pdo->lastInsertId();
 
@@ -323,5 +335,47 @@ class Product extends CoreModel
 
         // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
         return false;
+    }
+
+    /**
+     * Méthode permettant de mettre à jour un enregistrement dans la table brand
+     * L'objet courant doit contenir l'id, et toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     *
+     * @return bool
+     */
+    public function update()
+    {
+        // Récupération de l'objet PDO représentant la connexion à la DB
+        $pdo = Database::getPDO();
+
+        // Ecriture de la requête UPDATE
+        $sql = "
+            UPDATE `product`
+            SET
+                name = :name',
+                description = :description,
+                picture = :picture,
+                price = :price,
+                rate = :rate,
+                status = :status,
+                categoy_id = :categoryId
+                brand_id = :brandId, 
+                type_id = :typeId,
+                updated_at = NOW()
+            WHERE id = :id
+        ";
+
+        $preparedQuery = $pdo->prepare($sql);
+
+        $preparedQuery->bindValue(':name', $this->name);
+        $preparedQuery->bindValue(':description', $this->description);
+        $preparedQuery->bindValue(':picture', $this->picture);
+        $preparedQuery->bindValue(':categoryId', $this->category_id);
+        $preparedQuery->bindValue(':brandId', $this->brand_id);
+        $preparedQuery->bindValue(':typeId', $this->type_id);
+        $preparedQuery->bindValue(':id', $this->id);
+
+        $preparedQuery->execute();
+        
     }
 }

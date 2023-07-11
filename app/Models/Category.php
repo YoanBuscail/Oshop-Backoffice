@@ -250,4 +250,37 @@ class Category extends CoreModel
         // Si on arrive ici, c'est que quelque chose n'a pas bien fonctionné => FAUX
         return false;
     }
+
+    /**
+     * Méthode permettant de mettre à jour un enregistrement dans la table brand
+     * L'objet courant doit contenir l'id, et toutes les données à ajouter : 1 propriété => 1 colonne dans la table
+     *
+     * @return bool
+     */
+    public function update()
+    {
+        // Récupération de l'objet PDO représentant la connexion à la DB
+        $pdo = Database::getPDO();
+
+        // Ecriture de la requête UPDATE
+        $sql = "
+            UPDATE `category`
+            SET
+                name = :name',
+                subtitle = :subtitle,
+                picture = :picture,
+                updated_at = NOW()
+            WHERE id = :id
+        ";
+
+        $preparedQuery = $pdo->prepare($sql);
+
+        $preparedQuery->bindValue(':name', $this->name, PDO::PARAM_STR);
+        $preparedQuery->bindValue(':subtitle', $this->subtitle);
+        $preparedQuery->bindValue(':picture', $this->picture);
+        $preparedQuery->bindValue(':id', $this->id);
+
+        $preparedQuery->execute();
+        
+    }
 }

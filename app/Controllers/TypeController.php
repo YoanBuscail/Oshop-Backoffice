@@ -38,9 +38,56 @@ class TypeController extends CoreController
     public function addExecute(){
         $name = filter_input(INPUT_POST, 'name');
 
-        $type = new Type();
-        $type->setName($name);
+        $objectToInsert = new Type();
+        $objectToInsert->setName($name);
 
-        $type->insert();   
+        $objectToInsert->insert();   
+
+        // si une erreur est survenue, on ne fait pas de redirection 
+        // pour que l'on puisse avoir le message d'erreur
+        if (! $objectToInsert->insert())
+        {
+            die();
+        }
+
+        // TODO se débarasser de ce global !!!!
+        global $router;
+        // une fois le formulaire traité on redirige l'utilisateur
+        header('Location: ' . $router->generate('type-browse'));
+
+        exit;
+    }
+
+    public function edit($params)
+    {
+        // Récupérer l'identifiant de la catégorie à modifier à partir des paramètres de la route
+        $typeId = $params["id"];
+
+        // Récupérer la catégorie à partir de son identifiant
+        $typeToModify = type::find($typeId);
+        
+        // Afficher le formulaire de modification de la catégorie
+        $this->show('type/edit', [
+            'typeToModify' => $typeToModify
+        ]);
+    }
+
+    public function editExecute($params)
+    {
+        $typeId = $params["id"];
+        $typeToModify = Type::find($typeId);
+        
+        $name = filter_input(INPUT_POST, 'name');
+        
+        $objectToModify = new type();
+        $objectToModify->setName($name);
+
+        // Enregistrer les modifications dans la base de données
+        $typeToModify->update();
+
+        // Rediriger l'utilisateur vers la liste des catégories
+        global $router;
+        header('Location: ' . $router->generate('type-browse'));
+        exit;
     }
 }

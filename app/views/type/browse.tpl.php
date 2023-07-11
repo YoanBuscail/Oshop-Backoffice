@@ -15,9 +15,9 @@
                 ?> 
                 <tr>
                     <th scope="row"><?= $type->getId() ?></th>
-                    <td><?= $type->getName() ?></td>
+                    <td><?= htmlentities($type->getName()) ?></td>
                     <td class="text-end">
-                        <a href="" class="btn btn-sm btn-warning">
+                        <a href="<?= $router->generate('type-edit', ["id" => $type->getId()]); ?>" class="btn btn-sm btn-warning">
                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         </a>
                         <!-- Example single danger button -->
