@@ -65,21 +65,19 @@ class CategoryController extends CoreController
         // on lance la requête d'insertion
         $categoryToInsert->insert();
         
-        // TODO se débarasser de ce global !!!!
-        global $router;
-        // une fois le formulaire traité on redirige l'utilisateur
-        header('Location: ' . $router->generate('category-browse'));
-
-        exit;
+        $this->redirectToRoute('category-browse');
     }
 
-    public function edit($params)
+    /**
+     * Méthode s'occupant de l'affichage du formulaire de mise à jour
+     *
+     * @param int $id
+     * @return void
+     */
+    public function edit($id)
     {
-        // Récupérer l'identifiant de la catégorie à modifier à partir des paramètres de la route
-        $categoryId = $params["id"];
-
         // Récupérer la catégorie à partir de son identifiant
-        $categoryToModify = Category::find($categoryId);
+        $categoryToModify = Category::find($id);
 
         // Afficher le formulaire de modification de la catégorie
         $this->show('category/edit', [
@@ -87,26 +85,53 @@ class CategoryController extends CoreController
         ]);
     }
 
-    public function editExecute($params){
-        $categoryId = $params["id"];
-        $categoryToModify = Category::find($categoryId);
+    /**
+     * Méthode s'occupant du traitement du formulaire de mise à jour
+     *
+     * @param int $id
+     * @return void
+     */
+    public function editExecute($id){
         
-        // Récupérer les nouvelles données du formulaire de modification
+        // récupérer les données
         $name = filter_input(INPUT_POST, 'name');
         $subtitle = filter_input(INPUT_POST, 'subtitle');
         $picture = filter_input(INPUT_POST, 'picture', FILTER_VALIDATE_URL);
 
-        // Mettre à jour les propriétés de la catégorie
-        $categoryToModify->setName($name);
-        $categoryToModify->setSubtitle($subtitle);
-        $categoryToModify->setPicture($picture);
+        // valider / nettoyer les données
+        if (strlen($name) === 0)
+        {
+            die('Nom manquant');
+        }
+        if ($picture === false)
+        {
+            die('L\'image doit etre une url complète');
+        }
 
-        // Enregistrer les modifications dans la base de données
-        $categoryToModify->update();
+        // traiter le formulaire
 
-        // Rediriger l'utilisateur vers la liste des catégories
-        global $router;
-        header('Location: ' . $router->generate('category-browse'));
-        exit;
+        // on récupère l'objet de la BDD
+        $categoryToUpdate = Category::find($id);
+        // puis on le rempli ( on l'hydrate ) avec les données saisies par l'utilisateur
+        $categoryToUpdate->setName($name);
+        $categoryToUpdate->setSubtitle($subtitle);
+        $categoryToUpdate->setPicture($picture);
+
+        $categoryToUpdate->save();
+
+        // rediriger l'utilisateur
+        $this->redirectToRoute('category-browse');
+    }
+    
+    /**
+     * supprime un enregistrement en BDD
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        Category::delete($id);
+
+        $this->redirectToRoute('category-browse');
     }
 }

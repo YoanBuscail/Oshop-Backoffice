@@ -4,6 +4,10 @@
             Bienvenue dans le backOffice <strong>Dans les shoe</strong>...
         </p>
 
+        <?php if (isset($_SESSION['connexionMessage'])): ?>
+            <p class="alert alert-success"><?= $_SESSION['connexionMessage'] ?></p>
+        <?php unset($_SESSION['connexionMessage']); ?>
+        <?php endif; ?>
         <div class="row mt-5">
             <div class="col-12 col-md-6">
                 <div class="card text-white mb-3">
@@ -35,7 +39,7 @@
                                                 <i class="fa fa-trash-o" aria-hidden="true"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Oui, je veux supprimer</a>
+                                <a class="dropdown-item" href="<?= $router->generate('category-delete', ['id' => $category->getId()]); ?>">Oui, je veux supprimer</a>
                                                 <a class="dropdown-item" href="#" data-toggle="dropdown">Oups !</a>
                                             </div>
                                         </div>

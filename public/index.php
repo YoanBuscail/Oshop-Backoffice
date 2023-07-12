@@ -11,6 +11,8 @@ use App\Controllers\MainController;
 
 require_once '../vendor/autoload.php';
 
+session_start();
+
 /* ------------
 --- ROUTAGE ---
 -------------*/
@@ -51,6 +53,28 @@ $router->map(
         'controller' => '\App\Controllers\MainController' // On indique le FQCN de la classe
     ],
     'main-home'
+);
+
+/* App User*/
+
+$router->map(
+    'GET',
+    '/login',
+    [
+        'method' => 'connect',
+        'controller' => '\App\Controllers\UserController' // On indique le FQCN de la classe
+    ],
+    'user-connect'
+);
+
+$router->map(
+    'POST',
+    '/login',
+    [
+        'method' => 'connectExecute',
+        'controller' => '\App\Controllers\UserController' // On indique le FQCN de la classe
+    ],
+    'user-connectExecute'
 );
 
 /* CATEGORY */ 
@@ -103,6 +127,16 @@ $router->map(
         'controller' => '\App\Controllers\CategoryController'
     ],
     'category-editExecute'
+);
+
+$router->map(
+    'GET',
+    '/category/delete/[i:id]',
+    [
+        'method' => 'delete',
+        'controller' => '\App\Controllers\CategoryController'
+    ],
+    'category-delete'
 );
 
 /* PRODUCT */ 

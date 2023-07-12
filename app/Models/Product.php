@@ -350,32 +350,39 @@ class Product extends CoreModel
 
         // Ecriture de la requête UPDATE
         $sql = "
-            UPDATE `product`
+            UPDATE `product` 
             SET
-                name = :name',
+                name = :name,
                 description = :description,
                 picture = :picture,
                 price = :price,
                 rate = :rate,
                 status = :status,
-                categoy_id = :categoryId
-                brand_id = :brandId, 
-                type_id = :typeId,
-                updated_at = NOW()
-            WHERE id = :id
+                category_id = :category_id,
+                brand_id = :brand_id,
+                type_id = :type_id,
+                updated_at = now()
+            WHERE id = :id;
         ";
 
         $preparedQuery = $pdo->prepare($sql);
 
-        $preparedQuery->bindValue(':name', $this->name);
-        $preparedQuery->bindValue(':description', $this->description);
-        $preparedQuery->bindValue(':picture', $this->picture);
-        $preparedQuery->bindValue(':categoryId', $this->category_id);
-        $preparedQuery->bindValue(':brandId', $this->brand_id);
-        $preparedQuery->bindValue(':typeId', $this->type_id);
-        $preparedQuery->bindValue(':id', $this->id);
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':name' => $this->name,
+            ':description' => $this->description,
+            ':picture' => $this->picture,
+            ':price' => $this->price,
+            ':rate' => $this->rate,
+            ':status' => $this->status,
+            ':category_id' => $this->category_id,
+            ':brand_id' => $this->brand_id,
+            ':type_id' => $this->type_id,
+            ':id' => $this->id,
+       ]);
+        return $queryIsSuccessful;
+    }
 
-        $preparedQuery->execute();
+    public static function delete($id){
         
     }
 }

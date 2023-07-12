@@ -79,33 +79,28 @@ class ProductController extends CoreController
             die();
         }
 
-        // TODO se débarasser de ce global !!!!
         global $router;
-        // une fois le formulaire traité on redirige l'utilisateur
-        header('Location: ' . $router->generate('product-browse'));
-
-        exit;
+        
+        $this->redirectToRoute('product-browse');
     }
 
-     public function edit($params)
+     public function edit($id)
     {
-        // Récupérer l'identifiant de la catégorie à modifier à partir des paramètres de la route
-        $productId = $params["id"];
-
-        // Récupérer la catégorie à partir de son identifiant
-        $productToModify = Product::find($productId);
+        $productToModify = Product::find($id);
+        $allCategoryList = Category::findAll();
+        $allBrandList = Brand::findAll();
+        $allTypeList = Type::findAll();
         
-        // Afficher le formulaire de modification de la catégorie
         $this->show('product/edit', [
-            'productToModify' => $productToModify
+            'productToModify' => $productToModify,
+            'allCategoryList' => $allCategoryList,
+            'allBrandList' => $allBrandList,
+            'allTypeList' => $allTypeList,
         ]);
     }
 
-    public function editExecute($params)
+    public function editExecute($id)
     {
-        $productId = $params["id"];
-        $productToModify = Product::find($productId);
-        
         $name = filter_input(INPUT_POST, 'name');
         $description = filter_input(INPUT_POST, 'description');
         $picture = filter_input(INPUT_POST, 'picture', FILTER_VALIDATE_URL);
@@ -116,23 +111,25 @@ class ProductController extends CoreController
         $brandId = filter_input(INPUT_POST, 'brand_id', FILTER_VALIDATE_INT);
         $typeId = filter_input(INPUT_POST, 'type_id', FILTER_VALIDATE_INT);
 
-        $objectToModify = new Product();
-        $objectToModify->setName($name);
-        $objectToModify->setDescription($description);
-        $objectToModify->setPicture($picture);
-        $objectToModify->setPrice($price);
-        $objectToModify->setRate($rate);
-        $objectToModify->setStatus($status);
-        $objectToModify->setCategoryId($categoryId);
-        $objectToModify->setBrandId($brandId);
-        $objectToModify->setTypeId($typeId);
+        $objectToUpdate = Product::find($id);
+        
+        $objectToUpdate->setName($name);
+        $objectToUpdate->setDescription($description);
+        $objectToUpdate->setPicture($picture);
+        $objectToUpdate->setPrice($price);
+        $objectToUpdate->setRate($rate);
+        $objectToUpdate->setStatus($status);
+        $objectToUpdate->setCategoryId($categoryId);
+        $objectToUpdate->setBrandId($brandId);
+        $objectToUpdate->setTypeId($typeId);
 
         // Enregistrer les modifications dans la base de données
-        $productToModify->update();
+        if (! $objectToUpdate->save())
+        {
+            die();
+        }
 
-        // Rediriger l'utilisateur vers la liste des catégories
-        global $router;
-        header('Location: ' . $router->generate('product-browse'));
-        exit;
+        // Rediriger l'utilisateur vers la liste des catégories        
+        $this->redirectToRoute('product-browse');
     }
 }

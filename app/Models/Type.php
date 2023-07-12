@@ -146,6 +146,11 @@ class Type extends CoreModel
         $preparedQuery->bindValue(':name', $this->name);
         $preparedQuery->bindValue(':id', $this->id);
 
-        $preparedQuery->execute();
+        $queryIsSuccessful = $preparedQuery->execute();
+        return $queryIsSuccessful;
+    }
+
+    public function delete(){
+        
     }
 }
