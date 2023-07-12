@@ -266,21 +266,43 @@ class Category extends CoreModel
         $sql = "
             UPDATE `category`
             SET
-                name = :name',
+                name = :name,
                 subtitle = :subtitle,
                 picture = :picture,
+                home_order = :home_order,
                 updated_at = NOW()
             WHERE id = :id
         ";
 
         $preparedQuery = $pdo->prepare($sql);
 
-        $preparedQuery->bindValue(':name', $this->name, PDO::PARAM_STR);
+        $preparedQuery->bindValue(':name', $this->name);
         $preparedQuery->bindValue(':subtitle', $this->subtitle);
         $preparedQuery->bindValue(':picture', $this->picture);
         $preparedQuery->bindValue(':id', $this->id);
 
-        $preparedQuery->execute();
-        
+        $queryIsSuccessful = $preparedQuery->execute();
+
+        return $queryIsSuccessful;
+    }
+
+    public static function delete($id) 
+    {
+        // Récupération de l'objet PDO représentant la connexion à la DB
+        $pdo = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `category` WHERE id = :id;
+        ";
+
+        // $preparedQuery est un objet PDOStatement
+        $preparedQuery = $pdo->prepare($sql);
+
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':id' => $id,
+        ]);
+
+        return $queryIsSuccessful;
+
     }
 }

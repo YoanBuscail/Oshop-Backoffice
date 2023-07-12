@@ -123,7 +123,9 @@ class Brand extends CoreModel
         $preparedQuery->bindValue(':name', $this->name);
         $preparedQuery->bindValue(':id', $this->id);
 
-        $preparedQuery->execute();
+        $queryIsSuccessful = $preparedQuery->execute();
+
+        return $queryIsSuccessful;
     }
 
     /**
@@ -144,5 +146,9 @@ class Brand extends CoreModel
     public function setName(string $name)
     {
         $this->name = $name;
+    }
+
+    public static function delete($id){
+        
     }
 }

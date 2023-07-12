@@ -47,19 +47,14 @@ class BrandController extends CoreController
         } 
 
         global $router;
-        // une fois le formulaire traité on redirige l'utilisateur
-        header('Location: ' . $router->generate('brand-browse'));
-
-        exit;
+        
+        $this->redirectToRoute('brand-browse');
     }
 
-    public function edit($params)
+    public function edit($id)
     {
-        // Récupérer l'identifiant de la catégorie à modifier à partir des paramètres de la route
-        $brandId = $params["id"];
-
         // Récupérer la catégorie à partir de son identifiant
-        $brandToModify = Brand::find($brandId);
+        $brandToModify = Brand::find($id);
         
         // Afficher le formulaire de modification de la catégorie
         $this->show('brand/edit', [
@@ -67,10 +62,9 @@ class BrandController extends CoreController
         ]);
     }
 
-    public function editExecute($params)
+    public function editExecute($id)
     {
-        $brandId = $params["id"];
-        $brandToModify = Brand::find($brandId);
+        $brandToModify = Brand::find($id);
         
         $name = filter_input(INPUT_POST, 'name');
 
@@ -81,9 +75,6 @@ class BrandController extends CoreController
         // Enregistrer les modifications dans la base de données
         $brandToModify->update();
 
-        // Rediriger l'utilisateur vers la liste des catégories
-        global $router;
-        header('Location: ' . $router->generate('brand-browse'));
-        exit;
+        $this->redirectToRoute('brand-browse');
     }
 }

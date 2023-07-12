@@ -29,14 +29,14 @@
         </div>
         <div class="mb-3">
             <label for="status" class="form-label">Statut</label>
-            <label><input type="radio" value="0" checked name="status" id="status-inactive"> Inactif</label>
-            <label><input type="radio" value="1" name="status" id="status-inactive"> Actif</label>
+            <label><input type="radio" value="0" checked name="status" <?php if($productToModify->getStatus() == 0 ) echo 'checked'; ?> id="status-inactive"> Inactif</label>
+            <label><input type="radio" value="1" name="status" <?php if($productToModify->getStatus() == 1 ) echo 'checked'; ?> id="status-inactive"> Actif</label>
         </div>
         <div class="mb-3">
             <label for="category_id" class="form-label">Catégorie</label>
             <select id="category_id" name="category_id" class="form-control">
             <?php foreach ($allCategoryList as $currentCategory) : ?>
-                <option selected value="<?= $currentCategory->getId(); ?>"><?= $currentCategory->getName(); ?></option>
+                <option value="<?= $currentCategory->getId(); ?>" <?php if($productToModify->getCategoryId() == $currentCategory->getId() ) echo 'selected'; ?>><?= $currentCategory->getName(); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -44,7 +44,7 @@
             <label for="brand_id" class="form-label">Marque</label>
             <select id="brand_id" name="brand_id" class="form-control">
             <?php foreach ($allBrandList as $currentBrand) : ?>
-                <option selected value="<?= $currentBrand->getId(); ?>"><?= $currentBrand->getName(); ?></option>
+                <option value="<?= $currentBrand->getId(); ?>" <?php if($productToModify->getBrandId() == $currentBrand->getId() ) echo 'selected'; ?>><?= $currentBrand->getName(); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>
@@ -52,7 +52,7 @@
             <label for="type_id" class="form-label">Type</label>
             <select id="type_id" name="type_id" class="form-control">
             <?php foreach ($allTypeList as $currentType) : ?>
-                <option selected value="<?= $currentType->getId(); ?>"><?= $currentType->getName(); ?></option>
+                <option value="<?= $currentType->getId(); ?>" <?php if($productToModify->getTypeId() == $currentType->getId() ) echo 'selected'; ?>><?= $currentType->getName(); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

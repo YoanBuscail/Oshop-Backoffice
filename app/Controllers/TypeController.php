@@ -49,22 +49,14 @@ class TypeController extends CoreController
         {
             die();
         }
-
-        // TODO se débarasser de ce global !!!!
-        global $router;
-        // une fois le formulaire traité on redirige l'utilisateur
-        header('Location: ' . $router->generate('type-browse'));
-
-        exit;
+        
+        $this->redirectToRoute('type-browse');
     }
 
-    public function edit($params)
+    public function edit($id)
     {
-        // Récupérer l'identifiant de la catégorie à modifier à partir des paramètres de la route
-        $typeId = $params["id"];
-
         // Récupérer la catégorie à partir de son identifiant
-        $typeToModify = type::find($typeId);
+        $typeToModify = type::find($id);
         
         // Afficher le formulaire de modification de la catégorie
         $this->show('type/edit', [
@@ -72,10 +64,9 @@ class TypeController extends CoreController
         ]);
     }
 
-    public function editExecute($params)
+    public function editExecute($id)
     {
-        $typeId = $params["id"];
-        $typeToModify = Type::find($typeId);
+        $typeToModify = Type::find($id);
         
         $name = filter_input(INPUT_POST, 'name');
         
@@ -85,9 +76,7 @@ class TypeController extends CoreController
         // Enregistrer les modifications dans la base de données
         $typeToModify->update();
 
-        // Rediriger l'utilisateur vers la liste des catégories
-        global $router;
-        header('Location: ' . $router->generate('type-browse'));
-        exit;
+        // Rediriger l'utilisateur vers la liste
+        $this->redirectToRoute('type-browse');
     }
 }
