@@ -16,6 +16,8 @@ class ProductController extends CoreController
      */
     public function add()
     {
+        $this->checkAuthorization(['admin']);
+
         // Préparer les données ( = en général les récupérer depuis la BDD )
         // dynamiser les listes de catégorie, marque et type
         $allCategoryList = Category::findAll();
@@ -130,6 +132,18 @@ class ProductController extends CoreController
         }
 
         // Rediriger l'utilisateur vers la liste des catégories        
+        $this->redirectToRoute('product-browse');
+    }
+
+    /**
+     * supprime un enregistrement en BDD
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        Product::delete($id);
+
         $this->redirectToRoute('product-browse');
     }
 }

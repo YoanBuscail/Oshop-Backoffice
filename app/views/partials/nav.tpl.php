@@ -9,6 +9,7 @@
 
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
+                <?php if (isset($_SESSION['user_id'])) : ?>
                 <li class="nav-item">
                     <a class="nav-link active" href="<?= $router->generate('main-home'); ?>">Accueil <span class="sr-only">(current)</span></a>
                 </li>
@@ -31,8 +32,14 @@
                     <a class="nav-link" href="#">Sélection Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?= $router->generate('user-connect'); ?>">Se connecter</a>
+                    <a class="nav-link btn btn-danger text-light" href="<?= $router->generate('user-logout'); ?>">Déconnexion</a>
                 </li>
+                <li class="nav-item nav-link text-light">( <?= $_SESSION['user_object']->getEmail(); ?> ) </li>
+                <?php else : ?>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-success text-light" href="<?= $router->generate('user-connect'); ?>">Connexion</a>
+                </li>
+                <?php endif; ?>
             </ul>
         </div>
     </div>

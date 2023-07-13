@@ -41,8 +41,6 @@ class TypeController extends CoreController
         $objectToInsert = new Type();
         $objectToInsert->setName($name);
 
-        $objectToInsert->insert();   
-
         // si une erreur est survenue, on ne fait pas de redirection 
         // pour que l'on puisse avoir le message d'erreur
         if (! $objectToInsert->insert())
@@ -56,7 +54,7 @@ class TypeController extends CoreController
     public function edit($id)
     {
         // Récupérer la catégorie à partir de son identifiant
-        $typeToModify = type::find($id);
+        $typeToModify = Type::find($id);
         
         // Afficher le formulaire de modification de la catégorie
         $this->show('type/edit', [
@@ -70,13 +68,25 @@ class TypeController extends CoreController
         
         $name = filter_input(INPUT_POST, 'name');
         
-        $objectToModify = new type();
+        $objectToModify = new Type();
         $objectToModify->setName($name);
 
         // Enregistrer les modifications dans la base de données
         $typeToModify->update();
 
         // Rediriger l'utilisateur vers la liste
+        $this->redirectToRoute('type-browse');
+    }
+
+     /**
+     * supprime un enregistrement en BDD
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        Type::delete($id);
+
         $this->redirectToRoute('type-browse');
     }
 }

@@ -85,7 +85,7 @@ class Type extends CoreModel
      *
      * @return bool
      */
-    public function insert() :bool
+    public function insert() 
     {
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
@@ -93,7 +93,7 @@ class Type extends CoreModel
         // Ecriture de la requête INSERT INTO
         // on prépare des emplacement pour les valeurs à remplacer dans la requête
         $sql = "
-            INSERT INTO `category` (name)
+            INSERT INTO `type` (name)
             VALUES (:name);
         ";
 
@@ -150,7 +150,20 @@ class Type extends CoreModel
         return $queryIsSuccessful;
     }
 
-    public function delete(){
-        
+    public static function delete($id) 
+    {
+        $pdo = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `type` WHERE id = :id;
+        ";
+
+        $preparedQuery = $pdo->prepare($sql);
+
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':id' => $id,
+        ]);
+
+        return $queryIsSuccessful;
     }
 }

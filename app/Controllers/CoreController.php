@@ -23,7 +23,7 @@ class CoreController
         $viewData['currentPage'] = $viewName;
 
         // définir l'url absolue pour nos assets
-        $viewData['assetsBaseUri'] = $_SERVER['BASE_URI'] . 'assets/';
+        $viewData['assetsBaseUri'] = $_SERVER['BASE_URI'] . '/assets/';
         // définir l'url absolue pour la racine du site
         // /!\ != racine projet, ici on parle du répertoire public/
         $viewData['baseUri'] = $_SERVER['BASE_URI'];
@@ -42,7 +42,7 @@ class CoreController
         require_once __DIR__ . '/../views/layout/footer.tpl.php';
     }
 
-    public function redirectToRoute($routeName)
+    protected function redirectToRoute($routeName)
     {
         // TODO se débarasser de ce global !!!!
         global $router;
@@ -50,5 +50,34 @@ class CoreController
         header('Location: ' . $router->generate($routeName));
 
         exit;
+    }
+
+    /**
+     * Vérifie si l'utilisateur connecté a un des roles fournis
+     *
+     * @param array $authorizedRoles
+     * @return void
+     */
+    protected function checkAuthorization($authorizedRoles)
+    {
+        // si l'utilisateur n'est pas connecté
+        if(! isset($_SESSION['user_id']))
+        {
+            // alors rediriger vers la page de connexion
+            $this->redirectToRoute('main-login');
+        }
+        else
+        {
+            $connectedUser = $_SESSION['user_object'];
+            // sinon si elle n'a pas un des roles requis 
+            // if (in_array($connectedUser->getRole(), $authorizedRoles) === false)
+            if (! in_array($connectedUser->getRole(), $authorizedRoles))
+            {
+                // alors on affiche une page 403
+                // ce code 403 n'est intéressant que pour les machines
+                http_response_code(403);
+                die("Vous n'avez pas les droits");
+            }
+        }
     }
 }

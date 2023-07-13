@@ -7,8 +7,6 @@
 // autoload.php permet de charger d'un coup toutes les dépendances installées avec composer
 // mais aussi d'activer le chargement automatique des classes (convention PSR-4)
 
-use App\Controllers\MainController;
-
 require_once '../vendor/autoload.php';
 
 session_start();
@@ -75,6 +73,16 @@ $router->map(
         'controller' => '\App\Controllers\UserController' // On indique le FQCN de la classe
     ],
     'user-connectExecute'
+);
+
+$router->map(
+    'GET',
+    '/logout',
+    [
+        'method' => 'logout',
+        'controller' => '\App\Controllers\UserController' 
+    ],
+    'user-logout'
 );
 
 /* CATEGORY */ 
@@ -191,6 +199,16 @@ $router->map(
     'product-editExecute'
 );
 
+$router->map(
+    'GET',
+    '/product/delete/[i:id]',
+    [
+        'method' => 'delete',
+        'controller' => '\App\Controllers\ProductController'
+    ],
+    'product-delete'
+);
+
 /* BRAND */ 
 
 $router->map(
@@ -241,6 +259,16 @@ $router->map(
         'controller' => '\App\Controllers\BrandController'
     ],
     'brand-editExecute'
+);
+
+$router->map(
+    'GET',
+    '/brand/delete/[i:id]',
+    [
+        'method' => 'delete',
+        'controller' => '\App\Controllers\BrandController'
+    ],
+    'brand-delete'
 );
 
 /* TYPES */ 
@@ -294,6 +322,17 @@ $router->map(
     ],
     'type-editExecute'
 );
+
+$router->map(
+    'GET',
+    '/type/delete/[i:id]',
+    [
+        'method' => 'delete',
+        'controller' => '\App\Controllers\TypeController'
+    ],
+    'type-delete'
+);
+
 /* -------------
 --- DISPATCH ---
 --------------*/

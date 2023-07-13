@@ -73,6 +73,7 @@ class Brand extends CoreModel
         // Récupération de l'objet PDO représentant la connexion à la DB
         $pdo = Database::getPDO();
 
+        // TODO utiliser prepare partout ou $pdo->query() est utilisé
         // Ecriture de la requête INSERT INTO
         $sql = "
             INSERT INTO `brand` (name)
@@ -148,7 +149,20 @@ class Brand extends CoreModel
         $this->name = $name;
     }
 
-    public static function delete($id){
-        
+    public static function delete($id) 
+    {
+        $pdo = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `brand` WHERE id = :id;
+        ";
+
+        $preparedQuery = $pdo->prepare($sql);
+
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':id' => $id,
+        ]);
+
+        return $queryIsSuccessful;
     }
 }

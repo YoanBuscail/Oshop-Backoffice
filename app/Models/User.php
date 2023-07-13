@@ -50,30 +50,22 @@ class User extends CoreModel{
         
     }
 
+     /**
+     * Recherche un utilisateur par son email
+     *
+     * @param string $email
+     * @return AppUser
+     */
     public static function findByEmail($email){
         $pdo = Database::getPDO();
         $sql = "SELECT * FROM `app_user` WHERE `email` = :email";
 
         $preparedQuery = $pdo->prepare($sql);
-        $preparedQuery->execute(['email'=> $email]);
+        $preparedQuery->execute([':email'=> $email]);
 
-        $result = $preparedQuery->fetch(PDO::FETCH_ASSOC);
-
-        if ($result) {
-            $user = new User();
-            $user->email = $result['email'];
-            $user->password = $result['password'];
-            $user->firstname = $result['firstname'];
-            $user->lastname = $result['lastname'];
-            $user->role = $result['role'];
-            $user->status = $result['status'];
-            $user->id = $result['id'];
-
-            return $user;
-        } else {
-            return false;
-        }
-
+        $appUser = $preparedQuery->fetchObject(self::class);
+        
+        return $appUser;
     }
 
     /**

@@ -383,6 +383,18 @@ class Product extends CoreModel
     }
 
     public static function delete($id){
-        
+        $pdo = Database::getPDO();
+
+        $sql = "
+            DELETE FROM `product` WHERE id = :id;
+        ";
+
+        $preparedQuery = $pdo->prepare($sql);
+
+        $queryIsSuccessful = $preparedQuery->execute([
+            ':id' => $id,
+        ]);
+
+        return $queryIsSuccessful;
     }
 }

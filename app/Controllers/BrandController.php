@@ -45,8 +45,6 @@ class BrandController extends CoreController
         {
             die();
         } 
-
-        global $router;
         
         $this->redirectToRoute('brand-browse');
     }
@@ -74,6 +72,18 @@ class BrandController extends CoreController
 
         // Enregistrer les modifications dans la base de données
         $brandToModify->update();
+
+        $this->redirectToRoute('brand-browse');
+    }
+
+     /**
+     * supprime un enregistrement en BDD
+     *
+     * @return void
+     */
+    public function delete($id)
+    {
+        Brand::delete($id);
 
         $this->redirectToRoute('brand-browse');
     }

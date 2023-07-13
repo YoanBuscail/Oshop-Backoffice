@@ -29,6 +29,9 @@ class CategoryController extends CoreController
      * @return void
      */
     public function add(){
+
+        $this->checkAuthorization(['admin']);
+        
         $this->show('category/add');
     }
     
@@ -85,22 +88,24 @@ class CategoryController extends CoreController
         ]);
     }
 
-    /**
+     /**
      * Méthode s'occupant du traitement du formulaire de mise à jour
      *
      * @param int $id
      * @return void
      */
-    public function editExecute($id){
-        
-        // récupérer les données
+    public function editExecute(int $id)
+    {
+        // 1 - récupérer les données
         $name = filter_input(INPUT_POST, 'name');
         $subtitle = filter_input(INPUT_POST, 'subtitle');
         $picture = filter_input(INPUT_POST, 'picture', FILTER_VALIDATE_URL);
 
-        // valider / nettoyer les données
+        // 2 - valider / nettoyer les données
         if (strlen($name) === 0)
         {
+            // die arrête l'exécution du code
+            // on gérera les erreurs plus tard
             die('Nom manquant');
         }
         if ($picture === false)
@@ -108,19 +113,22 @@ class CategoryController extends CoreController
             die('L\'image doit etre une url complète');
         }
 
-        // traiter le formulaire
+        // 3 - traiter le formulaire
 
         // on récupère l'objet de la BDD
         $categoryToUpdate = Category::find($id);
+
         // puis on le rempli ( on l'hydrate ) avec les données saisies par l'utilisateur
         $categoryToUpdate->setName($name);
         $categoryToUpdate->setSubtitle($subtitle);
         $categoryToUpdate->setPicture($picture);
 
+        // et on le sauvegarde en BDD
         $categoryToUpdate->save();
 
-        // rediriger l'utilisateur
+        // 4 - rediriger l'utilisateur
         $this->redirectToRoute('category-browse');
+
     }
     
     /**

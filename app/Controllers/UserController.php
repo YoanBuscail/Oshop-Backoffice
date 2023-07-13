@@ -11,34 +11,34 @@ class UserController extends CoreController {
     }
 
     public function connectExecute(){
-        $email = filter_input(INPUT_POST, 'email');
+        $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
         $password = filter_input(INPUT_POST, 'password');
+
+        $userInDB = User::findByEmail($email);
 
         $errorList = [];
 
-        if (empty($email)) {
-            $errorList[] = "Veuillez indiquer une adresse email.";
+        if ($userInDB === false || $password !== $userInDB->getPassword())
+        {
+            $errorList[] = "Identifiant ou mot de passe incorrect";
+            $this->show('user/connect', ['errorList' => $errorList]);
         }
-    
-        if (empty($password)) {
-            $errorList[] = "Veuillez indiquer un mot de passe.";
-        }
-
-        $user = User::findByEmail($email);
-
-        if ($user) {
-            if ($password === $user->getPassword()) {
-                $_SESSION['userId'] = $user->getId();
-                $_SESSION['userObject'] = $user;
-                $_SESSION['connexionMessage'] = 'Connexion réussie';
-                $this->redirectToRoute('main-home');
-            } else {
-                $errorList[] = "Erreur : Mot de passe incorrect.";
-            }
-        } else {
-            $errorList[] = "Erreur : Identifiants invalides.";
+        // une fois l'objet récupéré, comparer le password fourni et le password de l'objet
+        else
+        {
+            $_SESSION['user_id'] = $userInDB->getId();
+            $_SESSION['user_object'] = $userInDB;
         }
 
-        $this->show('user/connect', ['errors' => $errorList]);
+        $this->redirectToRoute('main-home');
+        
     }   
+
+    public function logout()
+    {
+        unset($_SESSION['user_id']);
+        unset($_SESSION['user_object']);
+
+        $this->redirectToRoute('user-connect');
+    }
 }

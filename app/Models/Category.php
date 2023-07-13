@@ -279,6 +279,7 @@ class Category extends CoreModel
         $preparedQuery->bindValue(':name', $this->name);
         $preparedQuery->bindValue(':subtitle', $this->subtitle);
         $preparedQuery->bindValue(':picture', $this->picture);
+        $preparedQuery->bindValue(':home_order', $this->home_order);
         $preparedQuery->bindValue(':id', $this->id);
 
         $queryIsSuccessful = $preparedQuery->execute();
@@ -303,6 +304,5 @@ class Category extends CoreModel
         ]);
 
         return $queryIsSuccessful;
-
     }
 }
